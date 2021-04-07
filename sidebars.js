@@ -2,7 +2,7 @@ module.exports = {
   docs: [
     {
       type: 'category',
-      label: 'JQ Examples',
+      label: 'Supplemental JQ Guide',
       items: [
         'jq/guide',
         'jq/select',
