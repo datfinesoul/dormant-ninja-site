@@ -5,6 +5,7 @@ module.exports = {
       label: 'JQ Examples',
       items: [
         'jq/guide',
+        'jq/select',
       ],
     },
     {

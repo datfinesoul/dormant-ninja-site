@@ -3,4 +3,5 @@ title: "A Guide to JQ"
 slug: /
 ---
 
-JQ Guide
+## functions
+### [select](jq/select)
