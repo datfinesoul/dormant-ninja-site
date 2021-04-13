@@ -23,12 +23,12 @@ module.exports = {
           label: 'Docs',
           position: 'left',
         },
-        {to: 'blog', label: 'Blog', position: 'left'},
-        {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
-          position: 'right',
-        },
+        //{to: 'blog', label: 'Blog', position: 'left'},
+        //{
+        //  href: 'https://github.com/facebook/docusaurus',
+        //  label: 'GitHub',
+        //  position: 'right',
+        //},
       ],
     },
     footer: {
@@ -71,15 +71,15 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
+          //editUrl:
+          //  'https://github.com/facebook/docusaurus/edit/master/website/',
         },
         blog: {
           showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
+          blogTitle: 'dormant.ninja blog',
+          blogDescription: 'thoughts of the sleeping ninja',
+          routeBasePath: '/',
+          path: './blog'
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),

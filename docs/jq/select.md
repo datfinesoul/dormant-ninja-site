@@ -12,14 +12,14 @@ Similar to something like
 
 
 ```bash
-Input:  '{"x": {"y": [1,2,3]}}'
+Input:  '{"x": {"y": [1,2,3], "z": [4,5]}}'
 
         jq '.x.y[]'
 Output: 1
         2
         3
 
-        jq '.x.z[]'
+        jq '.x.a[]'
 Output: jq: error (at <stdin>:1): Cannot iterate over null (null)
 ```
 
@@ -27,29 +27,29 @@ Using select to deal with missing fields.
 
 
 ```bash
-Input:  '{"x": {"y": [1,2,3]}}'
+Input:  '{"x": {"y": [1,2,3], "z": [4,5]}}'
 
-        jq '.x|select(.y)[]'
+        jq '.x|select(.y).y[]'
 Output: 1
         2
         3
 
-        jq '.x|select(.z)[]'
+        jq '.x|select(.a).a[]'
 Output:
 ```
 
 The [alternative operator](https://stedolan.github.io/jq/manual/#Alternativeoperator://)
-can be used in this example as well, but I just don't find it as readable as the select method.
+can be used in this example as well.  Not sure which ends up being more readable.
 
 
 ```bash
-Input:  '{"x": {"y": [1,2,3]}}'
+Input:  '{"x": {"y": [1,2,3], "z": [4,5]}}'
 
         jq '.x|(.y//[])[]'
 Output: 1
         2
         3
 
-        jq '.x|(.z//[])[]'
+        jq '.x|(.a//[])[]'
 Output:
 ```
