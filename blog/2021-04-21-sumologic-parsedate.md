@@ -5,7 +5,7 @@ author: Phil Hadviger
 author_title: Principal Site Reliability Engineer @ GLG
 author_url: https://github.com/datfinesoul
 author_image_url: https://s.gravatar.com/avatar/fbd101f7b02677e16044db00640c727f?s=80
-tags: []
+tags: [sumologic, sumo logic, parseDate, ecs, aws, logs]
 draft: false
 description: Some trickiness around Sumo Logic Parse Date
 hide_table_of_contents: false
