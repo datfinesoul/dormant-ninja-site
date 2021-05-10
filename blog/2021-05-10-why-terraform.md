@@ -24,6 +24,8 @@ When reading about Terraform on reddit, or talking with people about it during m
 
 None of that is wrong by any means, and the point of this post isn't really a fight to the death trying to prove my use of Terraform is better than the alternative approaches.  I do believe though that after working on infrastructure quite a bit during my time being a developer, it offers the tooling and support to prove extremely powerful, adaptable and clear in it's approach to managing infrastructure.
 
+<!--truncate-->
+
 ## What it offers me.
 
 ### Confidence via dependency management and versioning.

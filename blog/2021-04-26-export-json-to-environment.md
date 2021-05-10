@@ -16,6 +16,8 @@ description: Exports the contents of a JSON object to environment variables
 
 There have been a few times where I've needed to take the contents of a JSON object and export them to the environment.  While there are surely lots of way to do this with `awk`, `sed`  and/or `jq` in combination, I've opted to just create a bash function for it.
 
+<!--truncate-->
+
 **An input file called `config.json`**
 
 Just a file with two key/value pairs, which will be used in the example below.
