@@ -21,6 +21,8 @@ Let's take for example a regular expression in Javascript for parsing an email a
 
 To a trained eye this is likely as least readable enough, that they can guess that this parses an email address.  But most people I work with, and myself included aren't going to be able to tell if there are any obvious bugs in this.
 
+<!--truncate-->
+
 **Coffeescript did something really well**
 
 While Coffeescript is frequently greeted with a grunt and moan around the people I know, it actually did many things better than javascript, before ES6 and all the new toys in JS started showing up a few years ago.
@@ -33,7 +35,7 @@ Now it does come with a downside, and that is that it handles spaces in the regu
 
 **Javascript can actually do this too (with a tiny bit of reusable code)**
 
-This example illustrates how to do this, by creating and using a method called `multilineRegex`, to make a new `RegExp` for parsing an AWS secret ARN.
+This example illustrates how to do this, by creating and using a method called `multilineRegex`, to make a new `RegExp` for parsing an AWS secret ARN.
 
 ```javascript
 const multilineRegex = (...parts) =>
@@ -56,5 +58,5 @@ console.log({
 
 The `RegExp` object in Javascript has an often neglected property called `source`, which returns the string version of a regular expression.  What the `multilineRegex` method does, is loop through all the parameters passed into it, and combines them into a long regex string, which is then used to create a new `RegExp` object.  
 
-Since `multilineRegex` is a method call, it can have each part broken up over multiple lines, and that naturally allows it to also have comments.
+Since `multilineRegex` is a method call, it can have each part broken up over multiple lines, and that naturally allows it to also have comments.
 

@@ -13,6 +13,8 @@ hide_table_of_contents: false
 
 Sumo Logic's [```parseDate(strDate>, <dateFormat>, <timeZone>)```](https://help.sumologic.com/05Search/Search-Query-Language/01-Parse-Operators/parseDate) operator allows queries to extract a timestamp in milliseconds from a string.  The operator functions in a fairly straight forward way, by using a dateFormat parameter (based on Java's [SimpleDateFormat](https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html))
 
+<!--truncate-->
+
 **A quick example of querying some Amazon ECS data.**
 
 ```sumologic_query
@@ -77,7 +79,7 @@ event_source="aws.ecs"
 
 ![image-20210421164026881](2021-04-21-sumologic-parsedate.assets/image-20210421164026881.png)
 
-The `replace(createdAt, /:(\d\d)Z/, ":$1.0Z")` in this query, adds in the missing date part when needed.  This likely creates some load on the query, but at least it addresses the parsing problem.
+The `replace(createdAt, /:(\d\d)Z/, ":$1.0Z")` in this query, adds in the missing date part when needed.  This likely creates some load on the query, but at least it addresses the parsing problem.
 
 **One more word of warning about NULL**
 
