@@ -8,7 +8,7 @@ hide_table_of_contents: false
 
 slug: git-co-author-script
 title: GIT Co-Author Helper Script
-tags: [git, co-author, bash]
+tags: [git, co-author, bash, commit.template]
 description: A helper script to manage git co-authors
 ---
 
@@ -22,6 +22,8 @@ Co-author attibuting looks somethink like the following in the commit message.
 Co-authored-by: name <name@example.com>
 Co-authored-by: another-name <another-name@example.com>
 ```
+
+<!--truncate-->
 
 So at the time of the commit, it requires that the author has the proper email address of the user they are trying to add as a co-author.
 
@@ -72,3 +74,83 @@ Now every time the user commits, the contents of the `.gitmessage` file would be
 
 ### Automate Co-Authors
 
+I wanted to automate the options above to accomplish a few things.
+
+1. I like `commit.template` files, so I wanted to preserve that in my workflow
+2. I wanted whatever option to come up with still support all the `git commit` arguments
+3. I didn't want to manage the email addresses and user names myself
+4. Co-Authors need to be relevant to what I'm working on, even in something like a giant infrastructure monorepo.
+
+I'll explain what I came up with in the comments are more below.
+
+```bash
+coauthor () {
+local STATUS ROOT_DIR COAUTHORS
+
+# this section is all about figuring out where this command is run
+git rev-parse HEAD -- > /dev/null 2>&1
+STATUS="$?"
+if [[ "${STATUS}" -ne 0 ]]; then
+  # Use the regular git command if:
+  # - This is not a GIT repo (so that you get normal errors)
+  # - This repo has not yet had a commit
+  git commit "$@"
+  return
+fi
+
+# This part happens if we are in a proper repo for using co-authors
+# By default, I'm going to look for co-authors related to the current directory and below
+ROOT_DIR="."
+if [[ "${1:-}" == "--all" ]]; then
+  # If the --all option was specified, the co-author filter will start at the repo root
+  ROOT_DIR="$(git rev-parse --show-toplevel)"
+fi
+
+# The co-authors will first be dumped into a temporary text file
+COAUTHORS="$(mktemp /tmp/co-author.XXXXXXXX)"
+{
+  # Here I'm using the contents of the commmit.template as part of the commit message
+  cat "$(git config commit.template)"
+  # - Read about git shortlog in detail online, but basically it's a list of all
+  # author emails, ordered by number of commits
+  # - I filter out my own email using the fgrep -v
+  # - I use FZF as a way to select the co-authors (with TAB key)
+  git shortlog --summary --numbered --email --all "${ROOT_DIR}" \
+    | cut -f2- \
+    | awk '$0="Co-authored-by: "$0' \
+    | fgrep -v "$(git config user.email)" \
+    | fzf --multi --exit-0 --no-sort
+} > "${COAUTHORS}"
+# I commit using the template that was created as the default gitmessage
+git commit --template="${COAUTHORS}" "$@"
+}
+```
+
+When I run this script, I get a popup looking something like this:
+
+![image-20210515213220676](2021-05-15-git-co-authors.assets/image-20210515213220676.png)
+
+This is a test repo, so not the greatest example, but basically a list shows up and I use TAB to select co-authors, and they get automatically inserted into the git commit message.
+
+![image-20210515213345889](2021-05-15-git-co-authors.assets/image-20210515213345889.png)
+
+## Some more Info about the script
+
+Whenever I was to commit something with co-author attribution, I now use the function.
+
+```bash
+# For example, previously.
+git commit -a
+
+# With attribution
+coauthor -a
+# or if I need all authors in the whole repo
+coauthor --all -a
+```
+
+### Notes
+
+- I've tested this on OSX Catalina and Ubuntu 18.04
+- `commit.template` supports `~/` abbreviations for the path, but this script currently requires a full or relative path to the `commit.template` file.
+- My actual script has `--gpg-sign` added to the `git commit` inside the script, so I didn't include it in this script, since I figured it was sort of a customization not needed for the example.
+- I have my version in a [public GitHub repo](https://github.com/datfinesoul/env-ubuntu/blob/main/functions/coauthor.bash), so if you find bugs or want to give suggestions, please open an issue there.
