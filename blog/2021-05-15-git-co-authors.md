@@ -35,7 +35,7 @@ Here are some things to note about the picture above.
 
 1. You can see the two author icons at the top, saying that the commit was done by multiple users.
 
-2. The is also a not that the commit is *partially verified*.  This is due to:
+2. The commit is also marked *partially verified*.  This is due to:
 
    - The primary author having GIT setup to sign his commits using his own GPG private key and GitHub confirming his signed commit.
 
