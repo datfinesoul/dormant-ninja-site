@@ -87,4 +87,24 @@ module.exports = {
       },
     ],
   ],
+  plugins: [
+    [
+      '@docusaurus/plugin-content-blog',
+      {
+        /**
+         * Required for any multi-instance plugin
+         */
+        id: 'draft-blog',
+        /**
+         * URL route for the blog section of your site.
+         * *DO NOT* include a trailing slash.
+         */
+        routeBasePath: 'drafts',
+        /**
+         * Path to data on filesystem relative to site dir.
+         */
+        path: './drafts',
+      },
+    ],
+  ],
 };
