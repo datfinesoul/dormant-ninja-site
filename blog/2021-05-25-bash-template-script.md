@@ -62,7 +62,7 @@ if [[ "${SCRIPT_DIR}" != "${CURRENT_DIR}" ]]; then
   exit 1
 fi
 
-if [[ "$(id -u)" -eq "0" ]]; then
+if [[ "$(id --user)" -eq "0" ]]; then
   >&2 echo ":: please DO NOT run as root"
   exit 1
 fi
@@ -84,7 +84,7 @@ if [[ "$?" -ne 0 ]]; then
 fi
 ```
 
-The template uses `readlink` as a way to find a full paths of files and directories.  I've found `readlink` to be the most reliable method, but it isn't created equally on Linux and OS-X (and some other systems).  So in parts of the template you'll see me use it like this: `"${readlink}" -e -- /tmp/bla`.  I need to use the GNU compatible version of `readlink` and so I create a variable for it, and execute that one instead a hardcoded executable.  The `readlink -e` part detects if the current version of `readlink` supports the `-e` flag, and if it doesn't it tries to use `greadlink` instead.  Not 100% failsafe, but works well enough so far.
+The template uses `readlink` as a way to find a full paths of files and directories.  I've found `readlink` to be the most reliable method, but it isn't created equally on Linux and OS-X (and some other systems).  So in parts of the template you'll see me use it like this: `"${readlink}" -e -- /tmp/bla`.  I need to use the GNU compatible version of `readlink` and so I create a variable for it, and execute that one instead a hardcoded executable.  The `readlink -e` part detects if the current version of `readlink` supports the `-e` flag, and if it doesn't it tries to use `greadlink` instead.  Not 100% failsafe, but works well enough so far.
 
 ### The Variables
 
@@ -97,7 +97,7 @@ CURRENT_DIR="$("${readlink}" -e -- "${_PWD}")" # current dir full path
 PID="$$" # process id
 ```
 
-These are fairly self explanatory, and are used in other parts of the template.  The `_PWD` that's used here, is purely present cause I could not get this template to properly color code in the Blog.  I would other omit it.
+These are fairly self explanatory, and are used in other parts of the template.  The `_PWD` that's used here, is purely present cause I could not get this template to properly color code in the Blog.  I would other omit it.
 
 ### Bash Strict Mode
 
@@ -154,19 +154,31 @@ One of the most important setups I use.  This takes both `stderr` and `stdout` a
 
 **Note**: Some scripts can make great benefit of keeping stderr separate from stdout, especially when the output of the command is used in a pipe.  For those scripts, I would not recommend sending both streams to the tee command, and instead only send `stdout`.
 
-### The Rest
+### Restrictions
+
+Detecting if you the user is executing the script from the correct directory can be critical in some cases.  The  aim of this block is exactly that.  In other cases though, it might just be that the variables `SCRIPT_DIR` and `CURRENT_DIR` are more important, and those can be used to make the script more directory agnostic.  Really depends on the needs.
 
 ```bash
 if [[ "${SCRIPT_DIR}" != "${CURRENT_DIR}" ]]; then
   >&2 echo ":: please execute this script from its own directory"
   exit 1
 fi
+```
 
+Preventing a script from being executed as root, or making sure it's a certain user, can be done using the `id` command.  In this case I'm looking for a number, since root is always 0, but `id` in combination with the `--name (-n)` flag, can also be used to display the name value of the user, group, etc.  I have to use `-u` vs `--user` in order to make the block more cross-compatible with Macs.
+
+```bash
 if [[ "$(id -u)" -eq "0" ]]; then
   >&2 echo ":: please DO NOT run as root"
   exit 1
 fi
+```
 
+### OS Detection
+
+A block I keep because my [dotfiles](https://github.com/datfinesoul/env-ubuntu) aims to run both on Macs and Linux.  Outside of that, nothing very exciting.  `-s` is used here over `--kernel-name` again for Mac compatibility.
+
+```bash
 if [[ "$(uname -s)" == "Darwin" ]]; then
   true
 else
@@ -174,3 +186,8 @@ else
 fi
 ```
 
+### Random Things About The Template
+
+#### stderr redirection prefix
+
+You see a lot of `>&2` scattered all over this script at the beginning of the line.  All that does is send the output to stderr.  Now in the case of the template as it shows above, that doesn't do much, since all the output is sent to the `tee` command as stdout, but if that weren't the case, those messages are intentionally sent to stderr, so they would be excluded from `grep` and such if there was a need.
