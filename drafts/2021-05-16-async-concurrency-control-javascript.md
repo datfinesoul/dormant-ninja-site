@@ -1,0 +1,14 @@
+---
+author: Phil Hadviger
+author_title: Principal Site Reliability Engineer @ GLG
+author_url: https://github.com/datfinesoul
+author_image_url: https://s.gravatar.com/avatar/fbd101f7b02677e16044db00640c727f?s=80
+draft: true
+hide_table_of_contents: false
+
+slug: async-concurrency-control-javascript
+title: Controlling concurrency
+tags: []
+description: The ability to put comments into regular expressions in Javascript and split them up over multiple lines.
+---
+
