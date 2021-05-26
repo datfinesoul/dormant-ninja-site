@@ -1,7 +1,7 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'dormant.ninja',
-  tagline: 'the ninja lies dormant in the shadows',
+  tagline: 'datfinesoul / Phil Hadviger\'s Blog and Docs',
   url: 'https://dormant.ninja',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -18,12 +18,16 @@ module.exports = {
       },
       items: [
         {
+          to: 'blog-archive',
+          label: 'Blog Archive',
+          position: 'left'
+        },
+        {
           to: 'docs/',
           activeBasePath: 'docs',
           label: 'Docs',
           position: 'left',
         },
-        //{to: 'blog', label: 'Blog', position: 'left'},
         //{
         //  href: 'https://github.com/facebook/docusaurus',
         //  label: 'GitHub',
@@ -38,26 +42,8 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Getting Started',
+              label: 'JQ Guide',
               to: 'docs/',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
             },
           ],
         },
