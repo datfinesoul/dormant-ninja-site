@@ -1,89 +1,86 @@
-import React from 'react';
-import clsx from 'clsx';
-import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import useBaseUrl from '@docusaurus/useBaseUrl';
-import styles from './styles.module.css';
+import React from "react";
+import clsx from "clsx";
+import Layout from "@theme/Layout";
+import Link from "@docusaurus/Link";
+import styles from "./styles.module.css";
 
-const features = [
-  {
-    title: 'Easy to Use',
-    imageUrl: 'img/undraw_docusaurus_mountain.svg',
-    description: (
-      <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
-      </>
-    ),
-  },
-  {
-    title: 'Focus on What Matters',
-    imageUrl: 'img/undraw_docusaurus_tree.svg',
-    description: (
-      <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
-      </>
-    ),
-  },
-  {
-    title: 'Powered by React',
-    imageUrl: 'img/undraw_docusaurus_react.svg',
-    description: (
-      <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
-      </>
-    ),
-  },
-];
+/**
+ * @typedef {Object} BlogPost - creates a new type named 'BlogPost'
+ * @property {string} date - eg "2021-04-24T00:00:00.000Z"
+ * @property {string} formattedDate - eg "April 24, 2021"
+ * @property {string} title - eg "The Service Now API and TypeScript Conditional Types"
+ * @property {string} permalink - eg "/2021/04/24/service-now-api-and-typescript-conditional-types"
+ */
 
-function Feature({imageUrl, title, description}) {
-  const imgUrl = useBaseUrl(imageUrl);
+/** @type {BlogPost[]} */
+const allPosts = ((ctx) => {
+  /** @type {string[]} */
+  const blogpostNames = ctx.keys();
+
+  return blogpostNames.reduce((blogposts, blogpostName, i) => {
+    const module = ctx(blogpostName)
+    const { date, formattedDate, title, permalink } = module.metadata;
+    return [
+      ...blogposts,
+      {
+        date,
+        formattedDate,
+        title,
+        permalink,
+      },
+    ];
+  }, /** @type {string[]}>} */ ([]));
+})(require.context("../../blog", false, /.md/));
+
+const postsByYear = allPosts.reduceRight((posts, post) => {
+  const year = post.date.split("-")[0];
+  const yearPosts = posts.get(year) || [];
+  return posts.set(year, [post, ...yearPosts]);
+}, /** @type {Map<string, BlogPost[]>}>} */ (new Map()));
+
+const yearsOfPosts = Array.from(postsByYear, ([year, posts]) => ({
+  year,
+  posts,
+}));
+
+function Year(
+  /** @type {{ year: string; posts: BlogPost[]}} */ {
+    year,
+    posts,
+  }
+) {
   return (
-    <div className={clsx('col col--4', styles.feature)}>
-      {imgUrl && (
-        <div className="text--center">
-          <img className={styles.featureImage} src={imgUrl} alt={title} />
-        </div>
-      )}
-      <h3>{title}</h3>
-      <p>{description}</p>
+    <div className={clsx("col col--4", styles.feature)}>
+      <h3>{year}</h3>
+      <ul>
+        {posts.map((post) => (
+          <li key={post.date}>
+            <Link to={post.permalink}>
+              {post.formattedDate} - {post.title}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-export default function Home() {
-  const context = useDocusaurusContext();
-  const {siteConfig = {}} = context;
+function BlogArchive() {
   return (
-    <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
-      <header className={clsx('hero hero--primary', styles.heroBanner)}>
+    <Layout title="Blog Archive">
+      <header className={clsx("hero hero--primary", styles.heroBanner)}>
         <div className="container">
-          <h1 className="hero__title">{siteConfig.title}</h1>
-          <p className="hero__subtitle">{siteConfig.tagline}</p>
-          <div className={styles.buttons}>
-            <Link
-              className={clsx(
-                'button button--outline button--secondary button--lg',
-                styles.getStarted,
-              )}
-              to={useBaseUrl('docs/')}>
-              Get Started
-            </Link>
-          </div>
+          <h1 className="hero__title">Blog Archive</h1>
+          <p className="hero__subtitle">Historic posts</p>
         </div>
       </header>
       <main>
-        {features && features.length > 0 && (
+        {yearsOfPosts && yearsOfPosts.length > 0 && (
           <section className={styles.features}>
             <div className="container">
               <div className="row">
-                {features.map((props, idx) => (
-                  <Feature key={idx} {...props} />
+                {yearsOfPosts.map((props, idx) => (
+                  <Year key={idx} {...props} />
                 ))}
               </div>
             </div>
@@ -93,3 +90,5 @@ export default function Home() {
     </Layout>
   );
 }
+
+export default BlogArchive;

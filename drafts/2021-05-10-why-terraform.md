@@ -30,4 +30,23 @@ None of that is wrong by any means, and the point of this post isn't really a fi
 
 ### Confidence via dependency management and versioning.
 
-Because Terraform is declarative in nature, the configuration files (`.tf` files) can be split up in any you choose inside the workspace.
+Because Terraform is declarative in nature, the configuration files (`.tf` files) can be split up in any you choose inside the workspace.
+
+### Terraform Pros
+
+- Existing infrastructure can be imported/adapted
+- Great you want to manage infrastructure on multiple providers
+- Support for infrastructure modules offering easier repeatability
+- Dry runs via plans
+- State management is left to the user
+- HCL is very readable
+- The providers seems updated very frequently and are sometimes even ahead of native providers like cloudformation, etc.
+- Great community support
+
+### Terraform Cons
+
+- State management is left to the user, and needs to be guarded
+- Supports HCL and JSON, but no conversion tools between the two.
+- Rollbacks can only be accomplished via a version control system, and are not part of the deployment/upgrade process
+- The platform hasn't reached 1.0 yet
+- Terraform itself, doesn't have any user/team management built in, so either Terraform Cloud or another comparable platform would have to be used.
