@@ -9,6 +9,14 @@ module.exports = {
         //'jq/heredoc',
       ],
     },
+    {
+      type: 'category',
+      label: 'bash notes',
+      items: [
+        'bash/index',
+        'bash/variable-transformations',
+      ],
+    },
     //{
     //  type: 'category',
     //  label: 'Docusaurus Tutorial',

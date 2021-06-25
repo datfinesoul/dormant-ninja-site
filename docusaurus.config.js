@@ -11,7 +11,7 @@ module.exports = {
   projectName: 'dormant-ninja-site', // Usually your repo name.
   themeConfig: {
     navbar: {
-      title: 'Home',
+      title: 'Blog',
       logo: {
         alt: 'My Site Logo',
         src: 'img/logo.webp',
@@ -39,11 +39,18 @@ module.exports = {
       style: 'dark',
       links: [
         {
-          title: 'Docs',
           items: [
             {
-              label: 'JQ Guide',
+              label: 'jq guide',
               to: 'docs/',
+            },
+          ],
+        },
+        {
+          items: [
+            {
+              label: 'bash guide',
+              to: 'docs/bash/index',
             },
           ],
         },
