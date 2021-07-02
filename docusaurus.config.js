@@ -2,7 +2,7 @@
 module.exports = {
   title: 'dormant.ninja',
   tagline: 'datfinesoul / Phil Hadviger\'s Blog and Docs',
-  url: 'https://dormant.ninja',
+  url: 'https://www.dormant.ninja',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
